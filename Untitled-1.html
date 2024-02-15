@@ -1,76 +1,187 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gerador de Números Aleatórios</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #e6f0ff; /* Azul suave */
-    margin: 0;
-    padding: 20px;
-  }
-  h1 {
-    margin-bottom: 20px;
-  }
-  #numero {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-    margin: 10px;
-    cursor: pointer;
-  }
-  .anuncio {
-    border: 1px solid #ccc;
-    background-color: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-</style>
+  <title>Jogo de AdivinhaÃ§Ã£o</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f8e7e7; /* Rosa claro */
+      margin-top: 100px;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .cloud {
+      position: absolute;
+      top: 30%;
+      left: -10%;
+      width: 200px;
+      height: 100px;
+      background-image: url("cloud.png");
+      background-size: contain;
+      animation: animateCloud 20s linear infinite;
+    }
+
+    .mario {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      background-image: url("mario.png");
+      background-size: contain;
+      animation: animateMario 1s infinite;
+    }
+
+    #fireworks-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
 </head>
 <body>
+  <div id="fireworks-container"></div>
 
-<h1>Gerador de Números Aleatórios</h1>
+  <div class="content">
+    <h1>Jogo de AdivinhaÃ§Ã£o</h1>
 
-<!-- ><div class="anuncio">
- Insira seu anúncio aqui  
-</div>-->
+    <div class="cloud"></div>
 
-<div id="numero">Número sorteado: </div>
-<button onclick="sortear()">Sorteio</button>
-<button onclick="reiniciar()">Novamente</button>
+    <div class="mario"></div>
 
-<div class="anuncio">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3492786047912863"
-     crossorigin="anonymous"></script>
-<!-- Test -->
-<ins class="adsbygoogle"
-     style="display:block;background-color:rgb(200,200,200);"
-     data-ad-client="ca-pub-3492786047912863"
-     data-ad-slot="7299892554"
-     data-adtest="on"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-</div>
+    <p>Tente adivinhar um nÃºmero entre 1 e 100:</p>
 
-<script>
-  function sortear() {
-    var numeroSorteado = Math.floor(Math.random() * 100) + 1;
-    document.getElementById("numero").innerText = "Número sorteado: " + numeroSorteado;
-  }
+    <input type="text" id="guessInput">
+    <button onclick="checkGuess()">Verificar</button>
+    <p id="result"></p>
+  </div>
 
-  function reiniciar() {
-    document.getElementById("numero").innerText = "Número sorteado: ";
-  }
-</script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    var randomNumber = Math.floor(Math.random() * 100) + 1;
+    var guessInput = document.getElementById("guessInput");
+    var result = document.getElementById("result");
+    var fireworksContainer = document.getElementById("fireworks-container");
 
-</body>
-</html>
+    function checkGuess() {
+      var userGuess = parseInt(guessInput.value);
+
+      if (userGuess === randomNumber) {
+        result.innerHTML = "ParabÃ©ns! VocÃª acertou!";
+        result.style.color = "green";
+        launchFireworks();
+      } else if (userGuess < randomNumber) {
+        result.innerHTML = "Tente um nÃºmero maior.";
+        result.style.color = "red";
+      } else {
+        result.innerHTML = "Tente um nÃºmero menor.";
+        result.style.color = "red";
+      }
+    }
+
+    function launchFireworks() {
+      particlesJS("fireworks-container", {
+        particles: {
+          number: {
+            value: 100,
+            density: {
+              enable: true,
+              value_area: 800
+            }
+          },
+          color: {
+            value: "#0000ff" /* Cor azul */
+          },
+          shape: {
+            type: "circle",
+            stroke: {
+              width: 0,
+              color: "#000000"
+            },
+            polygon: {
+              nb_sides: 5
+            },
+            image: {
+              src: "https://cdn.jsdelivr.net/gh/wikiabhi/fireworks.js/assets/img/github.svg",
+              width: 100,
+              height: 100
+            }
+          },
+          opacity: {
+            value: 0.5,
+            random: false,
+            anim: {
+              enable: false,
+              speed: 1,
+              opacity_min: 0.1,
+              sync: false
+            }
+          },
+          size: {
+            value: 10,
+            random: true,
+            anim: {
+              enable: false,
+              speed: 40,
+              size_min: 0.1,
+              sync: false
+            }
+          },
+          line_linked: {
+            enable: false,
+            distance: 500,
+            color: "#ffffff",
+            opacity: 0.4,
+            width: 2
+          },
+          move: {
+            enable: true,
+            speed: 6,
+            direction: "bottom",
+            random: false,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+            attract: {
+              enable: false,
+              rotateX: 600,
+             
